@@ -11,7 +11,7 @@ from enemies import *
 WIN_WIDTH = 800  # Ширина создаваемого окна
 WIN_HEIGHT = 640  # Высота
 DISPLAY = (WIN_WIDTH, WIN_HEIGHT)  # Группируем ширину и высоту в одну переменную
-BACKGROUND_COLOR = "#000000"
+BACKGROUND_COLOR = "#AFEEEE"
 
 FILE_DIR = os.path.dirname(__file__)
 
