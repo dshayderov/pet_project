@@ -16,16 +16,20 @@ GRAVITY = 0.35  # Сила, которая будет тянуть нас вни
 ANIMATION_DELAY = 1  # скорость смены кадров
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 
-ANIMATION_RIGHT = [('%s/img/player/playerGrey_right1.png' % ICON_DIR),
-                   ('%s/img/player/playerGrey_right2.png' % ICON_DIR),
-                   ('%s/img/player/playerGrey_right3.png' % ICON_DIR)]
-ANIMATION_LEFT = [('%s/img/player/playerGrey_left1.png' % ICON_DIR),
-                  ('%s/img/player/playerGrey_left2.png' % ICON_DIR),
-                  ('%s/img/player/playerGrey_left3.png' % ICON_DIR)]
-ANIMATION_JUMP_LEFT = [('%s/img/player/playerGrey_upl.png' % ICON_DIR, 1)]
-ANIMATION_JUMP_RIGHT = [('%s/img/player/playerGrey_upr.png' % ICON_DIR, 1)]
-ANIMATION_JUMP = [('%s/img/player/playerGrey_up.png' % ICON_DIR, 1)]
-ANIMATION_STAY = [('%s/img/player/playerGrey_stand.png' % ICON_DIR, 1)]
+ANIMATION_RIGHT = [
+    ("%s/img/player/playerGrey_right1.png" % ICON_DIR),
+    ("%s/img/player/playerGrey_right2.png" % ICON_DIR),
+    ("%s/img/player/playerGrey_right3.png" % ICON_DIR),
+]
+ANIMATION_LEFT = [
+    ("%s/img/player/playerGrey_left1.png" % ICON_DIR),
+    ("%s/img/player/playerGrey_left2.png" % ICON_DIR),
+    ("%s/img/player/playerGrey_left3.png" % ICON_DIR),
+]
+ANIMATION_JUMP_LEFT = [("%s/img/player/playerGrey_upl.png" % ICON_DIR, 1)]
+ANIMATION_JUMP_RIGHT = [("%s/img/player/playerGrey_upr.png" % ICON_DIR, 1)]
+ANIMATION_JUMP = [("%s/img/player/playerGrey_up.png" % ICON_DIR, 1)]
+ANIMATION_STAY = [("%s/img/player/playerGrey_stand.png" % ICON_DIR, 1)]
 
 
 class Player(sprite.Sprite):
@@ -76,22 +80,22 @@ class Player(sprite.Sprite):
             self.boltAnimJump.blit(self.image, (0, 0))
 
         if left:
-            self.xvel = -MOVE_SPEED  # Лево = x- n
+            self.xvel = -MOVE_SPEED
             self.image.fill(Color(COLOR))
-            if up:  # для прыжка влево есть отдельная анимация
+            if up:
                 self.boltAnimJumpLeft.blit(self.image, (0, 0))
             else:
                 self.boltAnimLeft.blit(self.image, (0, 0))
 
         if right:
-            self.xvel = MOVE_SPEED  # Право = x + n
+            self.xvel = MOVE_SPEED
             self.image.fill(Color(COLOR))
             if up:
                 self.boltAnimJumpRight.blit(self.image, (0, 0))
             else:
                 self.boltAnimRight.blit(self.image, (0, 0))
 
-        if not (left or right):  # стоим, когда нет указаний идти
+        if not (left or right):
             self.xvel = 0
             if not up:
                 self.image.fill(Color(COLOR))
@@ -104,31 +108,33 @@ class Player(sprite.Sprite):
         self.rect.y += self.yvel
         self.collide(0, self.yvel, platforms)
 
-        self.rect.x += self.xvel  # переносим свои положение на xvel
+        self.rect.x += self.xvel
         self.collide(self.xvel, 0, platforms)
 
     def collide(self, xvel, yvel, platforms):
         for p in platforms:
-            if sprite.collide_rect(self, p):  # если есть пересечение платформы с игроком
+            if sprite.collide_rect(
+                self, p
+            ):  # если есть пересечение платформы с игроком
                 if isinstance(p, blocks.BlockDie) or isinstance(p, enemies.Monster):
                     self.die()  # умираем
-                elif isinstance(p, blocks.Key):  # если коснулись принцессы
-                    self.winner = True  # победили!!!
+                elif isinstance(p, blocks.Key):
+                    self.winner = True
                 else:
-                    if xvel > 0:  # если движется вправо
-                        self.rect.right = p.rect.left  # то не движется вправо
+                    if xvel > 0:
+                        self.rect.right = p.rect.left
 
-                    if xvel < 0:  # если движется влево
-                        self.rect.left = p.rect.right  # то не движется влево
+                    if xvel < 0:
+                        self.rect.left = p.rect.right
 
-                    if yvel > 0:  # если падает вниз
-                        self.rect.bottom = p.rect.top  # то не падает вниз
-                        self.onGround = True  # и становится на что-то твердое
-                        self.yvel = 0  # и энергия падения пропадает
+                    if yvel > 0:
+                        self.rect.bottom = p.rect.top
+                        self.onGround = True
+                        self.yvel = 0
 
-                    if yvel <= 0:  # если движется вверх
-                        self.rect.top = p.rect.bottom  # то не движется вверх
-                        self.yvel = 0  # и энергия прыжка пропадает
+                    if yvel <= 0:
+                        self.rect.top = p.rect.bottom
+                        self.yvel = 0
 
     def teleporting(self, goX, goY):
         self.rect.x = goX

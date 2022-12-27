@@ -42,7 +42,7 @@ def camera_configure(camera, target_rect):
 
 
 def loadLevel():
-    with open('%s/levels/lvl1.txt' % FILE_DIR) as fil:
+    with open("%s/levels/lvl1.txt" % FILE_DIR) as fil:
         levelFile = fil.readlines()
     for line in levelFile:
         level.append(line)
@@ -50,22 +50,21 @@ def loadLevel():
 
 def main():
     loadLevel()
-    pygame.init()  # Инициация PyGame, обязательная строчка
-    screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
-    pygame.display.set_caption("Project")  # Пишем в шапку
+    pygame.init()
+    screen = pygame.display.set_mode(DISPLAY)  # Создаем окно
+    pygame.display.set_caption("Project")
     bg = Surface((WIN_WIDTH, WIN_HEIGHT))  # Создание видимой поверхности
-    # будем использовать как фон
-    bg.fill(Color(BACKGROUND_COLOR))  # Заливаем поверхность сплошным цветом
+    bg.fill(Color(BACKGROUND_COLOR))
 
-    left = right = False  # по умолчанию - стоим
+    left = right = False
     up = False
 
     hero = Player(50, 50)
 
     timer = pygame.time.Clock()
     x = y = 0  # координаты
-    for row in level:  # вся строка
-        for col in row:  # каждый символ
+    for row in level:
+        for col in row:
             if col == "O":
                 hero = Player(x, y)
                 entities.add(hero)
@@ -92,7 +91,9 @@ def main():
         y += PLATFORM_HEIGHT  # то же самое и с высотой
         x = 0  # на каждой новой строчке начинаем с нуля
 
-    total_level_width = len(level[0]) * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
+    total_level_width = (
+        len(level[0]) * PLATFORM_WIDTH
+    )  # Высчитываем фактическую ширину уровня
     total_level_height = len(level) * PLATFORM_HEIGHT  # высоту
 
     camera = Camera(camera_configure, total_level_width, total_level_height)
@@ -100,7 +101,7 @@ def main():
     while not hero.winner:  # Основной цикл программы
         timer.tick(60)
         keystate = pygame.key.get_pressed()
-        for e in pygame.event.get():  # Обрабатываем события
+        for e in pygame.event.get():
             if e.type == QUIT:
                 exit()
             if e.type == KEYDOWN and e.key == K_UP:
@@ -121,22 +122,22 @@ def main():
             if e.type == KEYUP and e.key == K_LSHIFT:
                 running = False
 
-        screen.blit(bg, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
+        screen.blit(bg, (0, 0))
 
-        animatedEntities.update()  # показываеaм анимацию
-        monsters.update(platforms)  # передвигаем всех монстров
-        camera.update(hero)  # центризируем камеру относительно персонажа
-        hero.update(left, right, up, platforms)  # передвижение
+        animatedEntities.update()
+        monsters.update(platforms)
+        camera.update(hero)
+        hero.update(left, right, up, platforms)
         for e in entities:
             screen.blit(e.image, camera.apply(e))
-        pygame.display.update()  # обновление и вывод всех изменений на экран
+        pygame.display.update()
 
 
 level = []
-entities = pygame.sprite.Group()  # Все объекты
-animatedEntities = pygame.sprite.Group()  # все анимированные объекты, за исключением героя
-monsters = pygame.sprite.Group()  # Все передвигающиеся объекты
-platforms = []  # то, во что мы будем врезаться или опираться
+entities = pygame.sprite.Group()
+animatedEntities = pygame.sprite.Group()
+monsters = pygame.sprite.Group()
+platforms = []
 
 
 if __name__ == "__main__":

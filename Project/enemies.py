@@ -10,9 +10,11 @@ MONSTER_HEIGHT = 37
 MONSTER_COLOR = "#2110FF"
 ICON_DIR = os.path.dirname(__file__)  # Полный путь к каталогу с файлами
 
-ANIMATION_MONSTERHORYSONTAL = [('%s/img/enemies/enemyFlying_1.png' % ICON_DIR),
-                               ('%s/img/enemies/enemyFlying_2.png' % ICON_DIR),
-                               ('%s/img/enemies/enemyFlying_3.png' % ICON_DIR)]
+ANIMATION_MONSTERHORYSONTAL = [
+    ("%s/img/enemies/enemyFlying_1.png" % ICON_DIR),
+    ("%s/img/enemies/enemyFlying_2.png" % ICON_DIR),
+    ("%s/img/enemies/enemyFlying_3.png" % ICON_DIR),
+]
 
 
 class Monster(sprite.Sprite):
@@ -34,7 +36,7 @@ class Monster(sprite.Sprite):
         self.boltAnim = pyganim.PygAnimation(boltAnim)
         self.boltAnim.play()
 
-    def update(self, platforms):  # по принципу героя
+    def update(self, platforms):
 
         self.image.fill(Color(MONSTER_COLOR))
         self.boltAnim.blit(self.image, (0, 0))
@@ -45,12 +47,18 @@ class Monster(sprite.Sprite):
         self.collide(platforms)
 
         if abs(self.startX - self.rect.x) > self.maxLengthLeft:
-            self.xvel = -self.xvel  # если прошли максимальное растояние, то идеи в обратную сторону
+            self.xvel = (
+                -self.xvel
+            )  # если прошли максимальное растояние, то идеи в обратную сторону
         if abs(self.startY - self.rect.y) > self.maxLengthUp:
-            self.yvel = -self.yvel  # если прошли максимальное растояние, то идеи в обратную сторону, вертикаль
+            self.yvel = (
+                -self.yvel
+            )  # если прошли максимальное растояние, то идеи в обратную сторону, вертикаль
 
     def collide(self, platforms):
         for p in platforms:
-            if sprite.collide_rect(self, p) and self != p:  # если с чем-то или кем-то столкнулись
-                self.xvel = - self.xvel  # то поворачиваем в обратную сторону
-                self.yvel = - self.yvel
+            if (
+                sprite.collide_rect(self, p) and self != p
+            ):  # если с чем-то или кем-то столкнулись
+                self.xvel = -self.xvel  # то поворачиваем в обратную сторону
+                self.yvel = -self.yvel
