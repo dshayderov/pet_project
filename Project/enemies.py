@@ -18,22 +18,22 @@ ANIMATION_MONSTERHORYSONTAL = [
 
 
 class Monster(sprite.Sprite):
-    def __init__(self, x, y, left=2, up=3, maxLengthLeft=100, maxLengthUp=100):
+    def __init__(self, x, y, left=2, up=3, maxlengthleft=100, maxlengthup=100):
         sprite.Sprite.__init__(self)
         self.image = Surface((MONSTER_WIDTH, MONSTER_HEIGHT))
         self.image.fill(Color(MONSTER_COLOR))
         self.rect = Rect(x, y, MONSTER_WIDTH, MONSTER_HEIGHT)
         self.image.set_colorkey(Color(MONSTER_COLOR))
-        self.startX = x  # начальные координаты
+        self.startX = x
         self.startY = y
-        self.maxLengthLeft = maxLengthLeft  # максимальное расстояние, которое может пройти в одну сторону
-        self.maxLengthUp = maxLengthUp  # максимальное расстояние, которое может пройти в одну сторону, вертикаль
+        self.maxLengthLeft = maxlengthleft  # максимальное расстояние, которое может пройти в одну сторону
+        self.maxLengthUp = maxlengthup  # максимальное расстояние, которое может пройти в одну сторону, вертикаль
         self.xvel = left  # cкорость передвижения по горизонтали, 0 - стоит на месте
         self.yvel = up  # скорость движения по вертикали, 0 - не двигается
-        boltAnim = []
+        boltanim = []
         for anim in ANIMATION_MONSTERHORYSONTAL:
-            boltAnim.append((anim, 1))
-        self.boltAnim = pyganim.PygAnimation(boltAnim)
+            boltanim.append((anim, 1))
+        self.boltAnim = pyganim.PygAnimation(boltanim)
         self.boltAnim.play()
 
     def update(self, platforms):

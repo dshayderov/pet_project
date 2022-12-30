@@ -7,6 +7,7 @@ from player import *
 from blocks import *
 from enemies import *
 
+
 # Объявляем переменные
 WIN_WIDTH = 800  # Ширина создаваемого окна
 WIN_HEIGHT = 640  # Высота
@@ -41,15 +42,15 @@ def camera_configure(camera, target_rect):
     return Rect(l, t, w, h)
 
 
-def loadLevel():
+def load_level():
     with open("%s/levels/lvl1.txt" % FILE_DIR) as fil:
-        levelFile = fil.readlines()
-    for line in levelFile:
+        levelfile = fil.readlines()
+    for line in levelfile:
         level.append(line)
 
 
 def main():
-    loadLevel()
+    load_level()
     pygame.init()
     screen = pygame.display.set_mode(DISPLAY)  # Создаем окно
     pygame.display.set_caption("Project")
@@ -98,29 +99,24 @@ def main():
 
     camera = Camera(camera_configure, total_level_width, total_level_height)
 
-    while not hero.winner:  # Основной цикл программы
+    while not hero.winner:
         timer.tick(60)
-        keystate = pygame.key.get_pressed()
         for e in pygame.event.get():
             if e.type == QUIT:
                 exit()
-            if e.type == KEYDOWN and e.key == K_UP:
+            if e.type == KEYDOWN and (e.key == K_UP or e.key == K_w):
                 up = True
-            if e.type == KEYDOWN and e.key == K_LEFT:
+            if e.type == KEYDOWN and (e.key == K_LEFT or e.key == K_a):
                 left = True
-            if e.type == KEYDOWN and e.key == K_RIGHT:
+            if e.type == KEYDOWN and (e.key == K_RIGHT or e.key == K_d):
                 right = True
-            if e.type == KEYDOWN and e.key == K_LSHIFT:
-                running = True
 
-            if e.type == KEYUP and e.key == K_UP:
+            if e.type == KEYUP and (e.key == K_UP or e.key == K_w):
                 up = False
-            if e.type == KEYUP and e.key == K_RIGHT:
+            if e.type == KEYUP and (e.key == K_RIGHT or e.key == K_d):
                 right = False
-            if e.type == KEYUP and e.key == K_LEFT:
+            if e.type == KEYUP and (e.key == K_LEFT or e.key == K_a):
                 left = False
-            if e.type == KEYUP and e.key == K_LSHIFT:
-                running = False
 
         screen.blit(bg, (0, 0))
 

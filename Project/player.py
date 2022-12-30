@@ -6,6 +6,7 @@ import pyganim
 import os
 import blocks
 import enemies
+import game
 
 MOVE_SPEED = 7
 WIDTH = 36
@@ -45,16 +46,16 @@ class Player(sprite.Sprite):
         self.rect = Rect(x, y, WIDTH, HEIGHT)  # прямоугольный объект
         self.image.set_colorkey(Color(COLOR))  # делаем фон прозрачным
         # Анимация движения вправо
-        boltAnim = []
+        boltanim = []
         for anim in ANIMATION_RIGHT:
-            boltAnim.append((anim, ANIMATION_DELAY))
-        self.boltAnimRight = pyganim.PygAnimation(boltAnim)
+            boltanim.append((anim, ANIMATION_DELAY))
+        self.boltAnimRight = pyganim.PygAnimation(boltanim)
         self.boltAnimRight.play()
         # Анимация движения влево
-        boltAnim = []
+        boltanim = []
         for anim in ANIMATION_LEFT:
-            boltAnim.append((anim, ANIMATION_DELAY))
-        self.boltAnimLeft = pyganim.PygAnimation(boltAnim)
+            boltanim.append((anim, ANIMATION_DELAY))
+        self.boltAnimLeft = pyganim.PygAnimation(boltanim)
         self.boltAnimLeft.play()
 
         self.boltAnimStay = pyganim.PygAnimation(ANIMATION_STAY)
@@ -75,7 +76,8 @@ class Player(sprite.Sprite):
     def update(self, left, right, up, platforms):
 
         if up:
-            self.yvel = -JUMP_POWER
+            if self.onGround:
+                self.yvel = -JUMP_POWER
             self.image.fill(Color(COLOR))
             self.boltAnimJump.blit(self.image, (0, 0))
 
@@ -136,10 +138,11 @@ class Player(sprite.Sprite):
                         self.rect.top = p.rect.bottom
                         self.yvel = 0
 
-    def teleporting(self, goX, goY):
-        self.rect.x = goX
-        self.rect.y = goY
+    def teleporting(self, gox, goy):
+        self.rect.x = gox
+        self.rect.y = goy
 
     def die(self):
         time.wait(500)
         self.teleporting(self.startX, self.startY)
+        game.score = 0
